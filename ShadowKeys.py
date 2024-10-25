@@ -128,8 +128,10 @@ class PasswordManager:
 
     @staticmethod
     def is_safe_input(user_input):
-        """Check if input is safe (does not contain harmful characters)."""
-        return isinstance(user_input, str) and all(c.isalnum() or c in (' ', '-', '_') for c in user_input)
+        """Check if input is safe (allows certain special characters)."""
+        # You can adjust allowed_special_chars based on your requirements
+        allowed_special_chars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/"
+        return isinstance(user_input, str) and all(c.isalnum() or c in (' ', '-', '_') or c in allowed_special_chars for c in user_input)
 
 def load_image_from_url(image_url, size=(85, 85)):
     """Load an image from a URL."""
@@ -217,17 +219,12 @@ class App:
     def delete_password(self):
         """Delete a password for the specified site."""
         site = self.site_entry.get()
-        if site:
-            if self.manager.delete_password(site):
-                messagebox.showinfo("Success", f"Password for {site} deleted successfully.")
-            else:
-                messagebox.showwarning("Not Found", "No password found for this site.")
+        if self.manager.delete_password(site):
+            messagebox.showinfo("Success", "Password deleted successfully!")
         else:
-            messagebox.showwarning("Input Error", "Please enter the site name to delete.")
+            messagebox.showwarning("Not Found", "No password found for this site.")
 
 if __name__ == "__main__":
-    ctk.set_appearance_mode("System")
-    ctk.set_default_color_theme("blue")
     root = ctk.CTk()
     app = App(root)
     root.mainloop()
