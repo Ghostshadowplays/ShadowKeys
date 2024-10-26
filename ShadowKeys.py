@@ -8,6 +8,7 @@ from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
 from io import BytesIO
 import requests
+import pyperclip  # Importing the pyperclip library
 
 def is_admin():
     """Check if the user has admin privileges."""
@@ -129,8 +130,7 @@ class PasswordManager:
     @staticmethod
     def is_safe_input(user_input):
         """Check if input is safe (allows certain special characters)."""
-        # You can adjust allowed_special_chars based on your requirements
-        allowed_special_chars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/"
+        allowed_special_chars = "!#$%&'()*+,-./:;<=\>?@[]^_`{|}~\""
         return isinstance(user_input, str) and all(c.isalnum() or c in (' ', '-', '_') or c in allowed_special_chars for c in user_input)
 
 def load_image_from_url(image_url, size=(85, 85)):
@@ -162,7 +162,7 @@ class App:
     def __init__(self, master):
         self.master = master
         master.title("ShadowKeys")
-        master.geometry("400x450")
+        master.geometry("400x550")
         master.resizable(False, False)
 
         logo_url = "https://raw.githubusercontent.com/Ghostshadowplays/Ghostyware-Logo/main/GhostywareLogo.png"
@@ -182,6 +182,11 @@ class App:
         self.password_entry = ctk.CTkEntry(master, show="*", width=300)
         self.password_entry.pack(pady=5)
 
+        self.show_password_button = ctk.CTkButton(master, text="Show", command=self.toggle_password,
+                                                   fg_color="#4158D0", hover_color="#993cda",
+                                                   border_color="#e7e7e7", border_width=2, width=200)
+        self.show_password_button.pack(pady=10)
+
         self.save_button = ctk.CTkButton(master, text="Save Password", command=self.save_password,
                                          fg_color="#4158D0", hover_color="#993cda",
                                          border_color="#e7e7e7", border_width=2, width=200)
@@ -192,35 +197,65 @@ class App:
                                          border_color="#e7e7e7", border_width=2, width=200)
         self.load_button.pack(pady=10)
 
+        self.copy_button = ctk.CTkButton(master, text="Copy to Clipboard", command=self.copy_to_clipboard,
+                                         fg_color="#4158D0", hover_color="#993cda",
+                                         border_color="#e7e7e7", border_width=2, width=200)
+        self.copy_button.pack(pady=10)
+
         self.delete_button = ctk.CTkButton(master, text="Delete Password", command=self.delete_password,
-                                           fg_color="#D03535", hover_color="#FF5757",
+                                           fg_color="#4158D0", hover_color="#993cda",
                                            border_color="#e7e7e7", border_width=2, width=200)
         self.delete_button.pack(pady=10)
 
+        self.load_passwords()
+
+    def toggle_password(self):
+        """Toggle the visibility of the password."""
+        if self.password_entry.cget("show") == "*":
+            self.password_entry.configure(show="")
+            self.show_password_button.configure(text="Hide")
+        else:
+            self.password_entry.configure(show="*")
+            self.show_password_button.configure(text="Show")
+
+    def load_passwords(self):
+        """Load passwords into the entry fields."""
+        for site, password in self.manager.passwords.items():
+            if site:  # Ensure the site entry is not empty
+                self.site_entry.insert(0, site)
+                self.password_entry.insert(0, password)
+
     def save_password(self):
-        """Save a password using the PasswordManager."""
+        """Save the password for the given site."""
         site = self.site_entry.get()
         password = self.password_entry.get()
-        if site and password:
-            self.manager.save_password(site, password)
-            messagebox.showinfo("Success", "Password saved successfully!")
-        else:
-            messagebox.showwarning("Input Error", "Please enter both site and password.")
+        self.manager.save_password(site, password)
+        messagebox.showinfo("Success", "Password saved successfully!")
 
     def load_password(self):
-        """Load a password for the specified site."""
+        """Load the password for the given site."""
         site = self.site_entry.get()
-        if site in self.manager.passwords:
-            password = self.manager.passwords[site]
-            messagebox.showinfo("Loaded Password", f"Password for {site}: {password}")
+        password = self.manager.passwords.get(site)
+        if password:
+            self.password_entry.delete(0, ctk.END)
+            self.password_entry.insert(0, password)
         else:
             messagebox.showwarning("Not Found", "No password found for this site.")
 
+    def copy_to_clipboard(self):
+        """Copy the loaded password to the clipboard."""
+        password = self.password_entry.get()
+        if password:
+            pyperclip.copy(password)  # Copy to clipboard
+            messagebox.showinfo("Copied", "Password copied to clipboard!")
+
     def delete_password(self):
-        """Delete a password for the specified site."""
+        """Delete the password for the given site."""
         site = self.site_entry.get()
         if self.manager.delete_password(site):
-            messagebox.showinfo("Success", "Password deleted successfully!")
+            self.site_entry.delete(0, ctk.END)
+            self.password_entry.delete(0, ctk.END)
+            messagebox.showinfo("Deleted", "Password deleted successfully!")
         else:
             messagebox.showwarning("Not Found", "No password found for this site.")
 
