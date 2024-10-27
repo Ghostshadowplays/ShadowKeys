@@ -162,9 +162,9 @@ ctk.CTkLabel(options_frame, text="Password Length:", text_color="#e7e7e7").pack(
 ctk.CTkEntry(options_frame, textvariable=length_var, width=60, fg_color="#444444", text_color="#ffffff", border_width=2).pack()
 
 # Checkboxes for character options
-ctk.CTkCheckBox(options_frame, text="Include Uppercase Letters", variable=upper_var, text_color="#e7e7e7", fg_color="#444444").pack()
-ctk.CTkCheckBox(options_frame, text="Include Digits", variable=digit_var, text_color="#e7e7e7", fg_color="#444444").pack()
-ctk.CTkCheckBox(options_frame, text="Include Special Characters", variable=special_var, text_color="#e7e7e7", fg_color="#444444").pack()
+ctk.CTkCheckBox(options_frame, text="Include Uppercase Letters", variable=upper_var, hover_color="#993cda", border_color="#e7e7e7", text_color="#e7e7e7", fg_color="#4158D0").pack()
+ctk.CTkCheckBox(options_frame, text="Include Digits", variable=digit_var, hover_color="#993cda", border_color="#e7e7e7", text_color="#e7e7e7", fg_color="#4158D0").pack()
+ctk.CTkCheckBox(options_frame, text="Include Special Characters", variable=special_var, hover_color="#993cda", border_color="#e7e7e7", text_color="#e7e7e7", fg_color="#4158D0").pack()
 
 # Button to generate password
 generate_button = ctk.CTkButton(
@@ -238,23 +238,50 @@ history_label.pack(pady=10)
 # Toggle for password visibility
 def toggle_password():
     if password_entry.cget("show") == "":
-        password_entry.configure(show="*")
-        toggle_button.configure(text="Show Password")
+        password_entry.configure(show="•")
     else:
         password_entry.configure(show="")
-        toggle_button.configure(text="Hide Password")
 
 toggle_button = ctk.CTkButton(
-    root,
-    text="Show Password",
-    command=toggle_password,
-    fg_color="#4158D0",
-    hover_color="#993cda",
-    border_color="#e7e7e7",
-    border_width=2,
+    root, 
+    text="Show Password", 
+    command=toggle_password, 
+    fg_color="#4158D0", 
+    hover_color="#993cda", 
+    border_color="#e7e7e7", 
+    border_width=2, 
     width=200
 )
 toggle_button.pack(pady=10)
+
+# Disclaimer button and window
+def show_disclaimer():
+    disclaimer_window = ctk.CTkToplevel(root)
+    disclaimer_window.title("Code of Conduct Disclaimer")
+    disclaimer_window.geometry("400x300")
+    ctk.CTkLabel(disclaimer_window, text="Code of Conduct:", font=("Helvetica", 16)).pack(pady=10)
+    ctk.CTkLabel(disclaimer_window, text=(
+        "1. Respect others.\n"
+        "2. Use appropriate language.\n"
+        "3. No spamming.\n"
+        "4. Share knowledge, not personal information.\n"
+        "5. Be inclusive and welcoming.\n"
+        "6. Report any issues.\n"
+        "7. Have fun and enjoy!\n"
+    ), font=("Helvetica", 12)).pack(pady=10)
+    ctk.CTkButton(disclaimer_window, text="Close", command=disclaimer_window.destroy).pack(pady=10)
+
+disclaimer_button = ctk.CTkButton(
+    root, 
+    text="Disclaimer", 
+    command=show_disclaimer, 
+    fg_color="#4158D0", 
+    hover_color="#993cda", 
+    border_color="#e7e7e7", 
+    border_width=2, 
+    width=200
+)
+disclaimer_button.pack(pady=10)
 
 # Run the application
 root.mainloop()

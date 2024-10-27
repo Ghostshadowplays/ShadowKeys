@@ -4,7 +4,7 @@ import sys
 import json
 from cryptography.fernet import Fernet
 import customtkinter as ctk
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, Toplevel
 from PIL import Image, ImageTk
 from io import BytesIO
 import requests
@@ -130,7 +130,7 @@ class PasswordManager:
     @staticmethod
     def is_safe_input(user_input):
         """Check if input is safe (allows certain special characters)."""
-        allowed_special_chars = "!#$%&'()*+,-./:;<=\>?@[]^_`{|}~\""
+        allowed_special_chars = "!#$%&'()*+,-./:;<=\>?@[]^_{|}~\""
         return isinstance(user_input, str) and all(c.isalnum() or c in (' ', '-', '_') or c in allowed_special_chars for c in user_input)
 
 def load_image_from_url(image_url, size=(85, 85)):
@@ -162,7 +162,7 @@ class App:
     def __init__(self, master):
         self.master = master
         master.title("ShadowKeys")
-        master.geometry("400x550")
+        master.geometry("400x580")
         master.resizable(False, False)
 
         logo_url = "https://raw.githubusercontent.com/Ghostshadowplays/Ghostyware-Logo/main/GhostywareLogo.png"
@@ -207,59 +207,96 @@ class App:
                                            border_color="#e7e7e7", border_width=2, width=200)
         self.delete_button.pack(pady=10)
 
-        self.load_passwords()
+        self.disclaimer_button = ctk.CTkButton(master, text="Disclaimer & Code of Conduct", command=self.show_disclaimer,
+                                                fg_color="#4158D0", hover_color="#993cda",
+                                                border_color="#e7e7e7", border_width=2, width=200)
+        self.disclaimer_button.pack(pady=10)
 
     def toggle_password(self):
-        """Toggle the visibility of the password."""
-        if self.password_entry.cget("show") == "*":
-            self.password_entry.configure(show="")
-            self.show_password_button.configure(text="Hide")
-        else:
+        """Toggle password visibility."""
+        if self.password_entry.cget("show") == "":
             self.password_entry.configure(show="*")
             self.show_password_button.configure(text="Show")
-
-    def load_passwords(self):
-        """Load passwords into the entry fields."""
-        for site, password in self.manager.passwords.items():
-            if site:  # Ensure the site entry is not empty
-                self.site_entry.insert(0, site)
-                self.password_entry.insert(0, password)
+        else:
+            self.password_entry.configure(show="")
+            self.show_password_button.configure(text="Hide")
 
     def save_password(self):
-        """Save the password for the given site."""
+        """Save the entered password."""
         site = self.site_entry.get()
         password = self.password_entry.get()
-        self.manager.save_password(site, password)
-        messagebox.showinfo("Success", "Password saved successfully!")
+        if site and password:
+            self.manager.save_password(site, password)
+            messagebox.showinfo("Success", f"Password for {site} saved successfully!")
+            self.site_entry.delete(0, 'end')
+            self.password_entry.delete(0, 'end')
+        else:
+            messagebox.showwarning("Input Error", "Please enter both site and password.")
 
     def load_password(self):
-        """Load the password for the given site."""
+        """Load a password for the entered site."""
         site = self.site_entry.get()
-        password = self.manager.passwords.get(site)
-        if password:
-            self.password_entry.delete(0, ctk.END)
+        if site in self.manager.passwords:
+            password = self.manager.passwords[site]
+            self.password_entry.delete(0, 'end')
             self.password_entry.insert(0, password)
         else:
-            messagebox.showwarning("Not Found", "No password found for this site.")
+            messagebox.showwarning("Not Found", f"No password found for {site}.")
 
     def copy_to_clipboard(self):
-        """Copy the loaded password to the clipboard."""
+        """Copy the current password to the clipboard."""
         password = self.password_entry.get()
         if password:
-            pyperclip.copy(password)  # Copy to clipboard
+            pyperclip.copy(password)
             messagebox.showinfo("Copied", "Password copied to clipboard!")
+        else:
+            messagebox.showwarning("Input Error", "Please enter a password to copy.")
 
     def delete_password(self):
-        """Delete the password for the given site."""
+        """Delete the password for the entered site."""
         site = self.site_entry.get()
-        if self.manager.delete_password(site):
-            self.site_entry.delete(0, ctk.END)
-            self.password_entry.delete(0, ctk.END)
-            messagebox.showinfo("Deleted", "Password deleted successfully!")
+        if site:
+            if self.manager.delete_password(site):
+                messagebox.showinfo("Success", f"Password for {site} deleted successfully!")
+                self.site_entry.delete(0, 'end')
+                self.password_entry.delete(0, 'end')
+            else:
+                messagebox.showwarning("Not Found", f"No password found for {site}.")
         else:
-            messagebox.showwarning("Not Found", "No password found for this site.")
+            messagebox.showwarning("Input Error", "Please enter a site to delete.")
+
+    def show_disclaimer(self):
+        """Show the disclaimer and code of conduct in a new window."""
+        disclaimer_window = Toplevel(self.master)
+        disclaimer_window.title("Disclaimer & Code of Conduct")
+        disclaimer_window.geometry("450x300")
+        
+        disclaimer_text = (
+            "Disclaimer:\n"
+            "This application is intended for password management purposes only.\n"
+            "Use it at your own risk. The developers are not responsible for any data loss.\n\n"
+            "Code of Conduct:\n"
+            "- Be respectful to all users.\n"
+            "- Do not share inappropriate content.\n"
+            "- Report any bugs or issues."
+
+        
+        
+        )
+        
+        disclaimer_label = ctk.CTkLabel(
+            disclaimer_window, 
+            text=disclaimer_text, 
+            justify="left", 
+            anchor="nw", 
+            padx=10, 
+            pady=10, 
+            text_color="black"  # Set text color to black
+        )
+        disclaimer_label.pack(fill="both", expand=True)
+        
 
 if __name__ == "__main__":
-    root = ctk.CTk()
+    root = ctk.CTk()  
     app = App(root)
     root.mainloop()
