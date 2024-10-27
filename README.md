@@ -19,3 +19,4 @@ Backup and Recovery: Keep your passwords safe with regular backup options and ea
 Cross-Platform Compatibility: Whether you're on Windows or macOS, ShadowKeys is designed to work seamlessly across platforms, ensuring you can access your passwords whenever you need them.
 
 With ShadowKeys, enjoy peace of mind knowing that your passwords are securely stored and easily accessible. Take control of your online security today!
+![ShadowKeys-Ghostys password generator GUI](https://github.com/user-attachments/assets/58db2e44-295d-452e-a47a-df8cfb7ffc55)
