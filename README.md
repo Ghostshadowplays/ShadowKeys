@@ -1,22 +1,63 @@
-ShadowKeys: Your Secure Password Manager
+# 🔐 ShadowKeys – Technician’s Vault
 
-ShadowKeys is a user-friendly password manager designed to simplify the way you store and manage your online credentials. With its sleek and intuitive interface, ShadowKeys ensures your sensitive information is protected while remaining easily accessible.
+**Your secure password manager, built for guardians of digital integrity.**  
+ShadowKeys simplifies credential management while upholding technician-grade encryption and legacy protection.
 
-Key Features:
+---
 
-Secure Encryption: Your passwords are encrypted using industry-standard algorithms, ensuring that only you can access them. ShadowKeys uses a robust key management system to keep your encryption keys safe.
+## 🧰 Key Features
 
-User-Friendly Interface: Navigate effortlessly through ShadowKeys’ streamlined interface, designed for both novice and experienced users. Add, retrieve, and manage your passwords with ease.
+- **Secure Encryption**  
+  Passwords are encrypted using industry-standard algorithms. Your vault is protected by a robust key management system—only you hold the keys.
 
-Password Storage: Store all your passwords securely in one place. ShadowKeys allows you to save passwords associated with different websites, making it easy to manage your online accounts.
+- **User-Friendly Interface**  
+  Designed for both novice and experienced users. Navigate your vault with clarity and precision.
 
-Password Generation: Never worry about remembering complex passwords again! ShadowKeys includes a built-in password generator to create strong, unique passwords for each of your accounts.
+- **Password Storage**  
+  Store credentials for all your accounts in one encrypted sanctuary.
 
-Two-Factor Authentication: Enhance your security with two-factor authentication (2FA). ShadowKeys supports multiple 2FA methods to ensure your accounts remain secure.
+- **Password Generation**  
+  Forge strong, unique passwords with the built-in generator. Each one is a digital ward.
 
-Backup and Recovery: Keep your passwords safe with regular backup options and easy recovery processes, so you never lose access to your critical information.
+- **Two-Factor Authentication (2FA)**  
+  Layered defense with multiple 2FA methods—because technician sanctums deserve more than one lock.
 
-Cross-Platform Compatibility: Whether you're on Windows or macOS, ShadowKeys is designed to work seamlessly across platforms, ensuring you can access your passwords whenever you need them.
+- **Backup and Recovery**  
+  Ritualized redundancy ensures you never lose access. Backups are your legacy insurance.
 
-With ShadowKeys, enjoy peace of mind knowing that your passwords are securely stored and easily accessible. Take control of your online security today!
-![ShadowKeys-Ghostys password generator GUI](https://github.com/user-attachments/assets/58db2e44-295d-452e-a47a-df8cfb7ffc55)
+- **Cross-Platform Compatibility**  
+  Whether on Windows or macOS, your vault travels with you.
+
+---
+
+![ShadowKeys – Ghosty’s Password Generator GUI](https://github.com/user-attachments/assets/58db2e44-295d-452e-a47a-df8cfb7ffc55)
+
+---
+
+## 📜 License
+
+ShadowKeys is licensed under the **GNU General Public License v3.0 (GPLv3)**.
+
+This means:
+- You’re free to use, modify, and distribute the code.
+- Any derivative work must also remain open-source under GPLv3.
+- The technician legacy and ethical framework remain protected.
+
+See the [LICENSE](./LICENSE) file for full terms.
+
+---
+
+## 🧙 Mythos
+
+ShadowKeys isn’t just a password manager—it’s a technician’s vault.  
+Every password is a ritual. Every backup is a legacy.  
+Built to honor earned mastery and protect users from digital deception.
+
+---
+
+## 🎥 Follow the Journey
+
+Join me on Twitch:  
+👉 [twitch.tv/ghostshadow_plays](https://www.twitch.tv/ghostshadow_plays)  
+We’re all learning—every vault forged is a step toward mastery.
+
